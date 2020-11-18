@@ -1,7 +1,11 @@
 from nl4dv import NL4DV
 from utils import clean_dict
+from get_data import get_parsed_data
 import os
 import json
+
+# Retrieve data from the DB
+data = get_parsed_data()
 
 # Initialize an instance of NL4DV
 # https://www.cc.gatech.edu/~anarechania3/docs/publications/nl4dv_vis_2020.pdf
@@ -13,9 +17,10 @@ dependency_parser_config = {"name": "spacy", "model": "en_core_web_sm", "parser"
 nl4dv_instance.set_dependency_parser(config=dependency_parser_config)
 
 # Define a query
-# query = "create a boxplot of acceleration"
+query = "create a boxplot of acceleration"
 # query = "visualize the relationship between cylinders and mpg"
-query = "show me the average mpg in each origin"
+# query = "show me the average mpg in each origin"
+# query = "show the displacement, mpg, and cylinders"
 
 # Execute the query
 output = nl4dv_instance.analyze_query(query)
