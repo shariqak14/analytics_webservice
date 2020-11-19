@@ -2,9 +2,9 @@
 
 ## Create a virtual environment
 ```
-pip install virtualenv -g
-virtualenv ~/.analytics_webservice
-source ~/.analytics_webservice/bin/activate
+pip install virtualenv
+virtualenv .analytics_env
+source .analytics_env/bin/activate
 ```
 
 ## Install the dependencies
