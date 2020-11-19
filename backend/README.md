@@ -1,16 +1,19 @@
 # Using NLP for Data Visualization
 
-## Installing dependencies
+## Create a virtual environment
+```
+pip install virtualenv
+virtualenv ~/.analytics_webservice
+source ~/.analytics_webservice/bin/activate
+```
+
+## Install the dependencies
 ```
 pip install -r requirements.txt
 python -m spacy download en
 ```
 
-## Running the script
-Specify the query in the `graph_query.py` file before running the script. Copy the output (if any).
+## Start the backend server
 ```
-python graph_query.py
+python app.py
 ```
-
-## Generating visualizations
-Navigate to the [Vega Lite Editor](https://vega.github.io/editor/) and paste the output from the previous step.
