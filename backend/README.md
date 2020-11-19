@@ -2,7 +2,7 @@
 
 ## Create a virtual environment
 ```
-pip install virtualenv
+pip install virtualenv -g
 virtualenv ~/.analytics_webservice
 source ~/.analytics_webservice/bin/activate
 ```
