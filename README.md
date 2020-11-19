@@ -3,8 +3,8 @@
 ## Create a virtual environment
 ```
 pip install virtualenv
-virtualenv .analytics_env
-source .analytics_env/bin/activate
+virtualenv ~/.analytics_env
+source ~/.analytics_env/bin/activate
 ```
 
 ## Install the dependencies
