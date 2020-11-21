@@ -19,9 +19,8 @@ def create_dv_from_nl():
     """
     > curl http://localhost:5000/graph?query=create%20a%20boxplot%20of%20acceleration
     
-    [x] Run the natural langauge through Jack's parser and extract a SQL query (ex. "SELECT * from cars;")
-    [x] Use Paul's web service to get the result of the SQL query
-    [x] Use the response of the SQL query as the input data for the NL4DV instance
+    [x] Run the natural langauge through Jack's parser and get relevant data
+    [x] Use the response as the input data for the NL4DV instance
     """
 
     # Extract query from the request url
