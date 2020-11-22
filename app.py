@@ -2,19 +2,20 @@ from flask import Flask, jsonify, abort, make_response, request
 from flask_cors import cross_origin
 from nl4dv import NL4DV
 from utils import clean_dict
+from get_data import get_parsed_data
 import os
 
 app = Flask(__name__)
 
 
 @app.route("/")
-@cross_origin() # allow all origins all methods.
+@cross_origin()
 def home():
     abort(404)
 
 
 @app.route("/graph")
-@cross_origin() # allow all origins all methods.
+@cross_origin()
 def create_dv_from_nl():
     """
     > curl http://localhost:5000/graph?query=create%20a%20boxplot%20of%20acceleration
@@ -29,7 +30,7 @@ def create_dv_from_nl():
         abort(404)
 
     # Initialize an instance of NL4DV
-    nl4dv_instance = NL4DV(data_url=os.path.join("cars.csv"))
+    nl4dv_instance = NL4DV(data_value=get_parsed_data())
 
     # Set the Dependency Parser to spaCy
     dependency_parser_config = {
@@ -53,10 +54,8 @@ def create_dv_from_nl():
         vl_spec = vis_obj["vlSpec"]
         vl_spec_clean = clean_dict(vl_spec)
 
-        # TODO: Delete this once NL4DV starts supporting raw_data inputs
-        vl_spec_clean["data"] = {
-            "url": "https://raw.githubusercontent.com/shariqak14/graph_nlp_data/main/cars.csv"
-        }
+        # Supply the original data source
+        vl_spec_clean["data"] = {"values": get_parsed_data()}
 
         # Append each preprocessed Vega Lite specification
         vl_spec_arr.append(vl_spec_clean)
@@ -66,7 +65,7 @@ def create_dv_from_nl():
 
 
 @app.errorhandler(404)
-@cross_origin() # allow all origins all methods.
+@cross_origin()
 def not_found(error):
     return make_response(jsonify({"error": "Not found"}), 404)
 
