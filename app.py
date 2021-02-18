@@ -7,6 +7,8 @@ import os
 
 app = Flask(__name__)
 
+PORT = 5000
+HOST = "0.0.0.0"
 
 @app.route("/")
 @cross_origin()
@@ -71,4 +73,4 @@ def not_found(error):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, host=HOST, port=PORT)
