@@ -6,26 +6,28 @@ git clone https://github.com/shariqak14/analytics_webservice.git
 cd analytics_webservice/
 ```
 
-## Create a virtual environment
+## Install virtualenv
 ```
 pip install virtualenv
-virtualenv ~/.analytics
 ```
 
 ## Activate the virtual environment
 ### MacOS/Linux
 ```
+virtualenv ~/.analytics
 source ~/.analytics/bin/activate
 ```
 ### Windows
 ```
-~/.analytics/bin/activate
+virtualenv C:\.analytics
+C:\.analytics\Scripts\activate.bat
 ```
 
 ## Install the dependencies
 ```
 cd analytics/app
 pip install -r requirements.txt
+python -m spacy download en_core_web_sm
 ```
 
 ## Start the backend server
