@@ -27,6 +27,7 @@ C:\.analytics\Scripts\activate.bat
 ```
 cd analytics/app
 pip install -r requirements.txt
+python -m nltk.downloader popular
 python -m spacy download en_core_web_sm
 ```
 
