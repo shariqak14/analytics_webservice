@@ -18,7 +18,7 @@ source ~/.analytics/bin/activate
 
 ## Install the dependencies
 ```
-cd app
+cd analytics/app
 pip install -r requirements.txt
 ```
 
