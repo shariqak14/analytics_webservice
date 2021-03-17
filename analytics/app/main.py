@@ -4,6 +4,8 @@ from nl4dv import NL4DV
 from utils import clean_dict
 from get_data import get_parsed_data
 import os
+import requests
+import connection as conn
 
 app = Flask(__name__)
 
@@ -21,7 +23,7 @@ def home():
 def create_dv_from_nl():
     """
     > curl http://localhost:5000/graph?query=create%20a%20boxplot%20of%20acceleration
-    
+
     [x] Run the natural langauge through Jack's parser and get relevant data
     [x] Use the response as the input data for the NL4DV instance
     """
@@ -31,8 +33,20 @@ def create_dv_from_nl():
     if not query:
         abort(404)
 
+    # Run the natural language query through Jack's parser to get relevant data
+    #data = requests.get('https://sdp2.cse.uconn.edu:8080/query=' + query)
+    #if not data:
+    #   abort(404)
+
+    sql_conn_obj = conn.DB_Connection()
+    ln2sql = "SELECT * FROM Condition_History;"
+    desc, result = sql_conn_obj.exec_sql(ln2sql)
+    column_names = [col[0] for col in desc]
+    parsed_result = [dict(zip(column_names, row)) for row in result]
+    sql_conn_obj.close_connection()
+
     # Initialize an instance of NL4DV
-    nl4dv_instance = NL4DV(data_value=get_parsed_data())
+    nl4dv_instance = NL4DV(data_value=parsed_result.copy())
 
     # Set the Dependency Parser to spaCy
     dependency_parser_config = {
@@ -57,7 +71,7 @@ def create_dv_from_nl():
         vl_spec_clean = clean_dict(vl_spec)
 
         # Supply the original data source
-        vl_spec_clean["data"] = {"values": get_parsed_data()}
+        vl_spec_clean["data"] = {"values": parsed_result}
 
         # Append each preprocessed Vega Lite specification
         vl_spec_arr.append(vl_spec_clean)
