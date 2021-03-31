@@ -2,7 +2,6 @@ from flask import Flask, jsonify, abort, make_response, request
 from flask_cors import cross_origin
 from nl4dv import NL4DV
 from utils import clean_dict
-from get_data import get_parsed_data
 import os
 import requests
 import connection as conn
@@ -10,7 +9,7 @@ import connection as conn
 app = Flask(__name__)
 
 PORT = 5000
-HOST = "0.0.0.0"
+HOST = "sdp2.cse.uconn.edu"
 
 @app.route("/")
 @cross_origin()
@@ -22,7 +21,7 @@ def home():
 @cross_origin()
 def create_dv_from_nl():
     """
-    > curl http://localhost:5000/graph?query=create%20a%20boxplot%20of%20acceleration
+    > curl http://sdp2.cse.uconn.edu:5000/graph?query=show%20me%20a%20piechart%20of%20different%20drugs&sql=SELECT%20*%20FROM%20Condition_History;
 
     [x] Run the natural langauge through Jack's parser and get relevant data
     [x] Use the response as the input data for the NL4DV instance
@@ -33,20 +32,19 @@ def create_dv_from_nl():
     if not query:
         abort(404)
 
-    # Run the natural language query through Jack's parser to get relevant data
-    #data = requests.get('https://sdp2.cse.uconn.edu:8080/query=' + query)
-    #if not data:
-    #   abort(404)
+    ln2sql = str(request.args.get("sql"))
+    if not ln2sql:
+        abort(404)
 
     sql_conn_obj = conn.DB_Connection()
-    ln2sql = "SELECT * FROM Condition_History;"
     desc, result = sql_conn_obj.exec_sql(ln2sql)
     column_names = [col[0] for col in desc]
     parsed_result = [dict(zip(column_names, row)) for row in result]
     sql_conn_obj.close_connection()
 
     # Initialize an instance of NL4DV
-    nl4dv_instance = NL4DV(data_value=parsed_result.copy())
+    alias = {"condition_name": ["condition", "conditions"], "severity": ["severe"]}
+    nl4dv_instance = NL4DV(data_value=parsed_result.copy(), alias_value=alias)
 
     # Set the Dependency Parser to spaCy
     dependency_parser_config = {
@@ -87,4 +85,4 @@ def not_found(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host=HOST, port=PORT)
+    app.run(debug=False, host=HOST, port=PORT)

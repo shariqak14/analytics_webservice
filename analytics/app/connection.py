@@ -14,16 +14,9 @@ class DB_Connection:
         self.__cursor = self.__conn_obj.cursor()
 
     def exec_sql(self, qry):
-        print("\nExecuting query from cursor")
         self.__cursor.execute(qry)
-        print("\nQuery executed ....\nGetting result set:-\n")
         self.__result_set = self.__cursor.fetchall()
         self.__column_names = self.__cursor.description
-        print(
-            "\nConnection Object is : {0}\nCursor Object is : {1}\nResult set type is : {2}".format(
-                self.__conn_obj, self.__cursor, type(self.__result_set)
-            )
-        )
         return self.__column_names, self.__result_set
 
     def close_connection(self):
